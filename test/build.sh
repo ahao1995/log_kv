@@ -1,0 +1,1 @@
+g++ test.cc -std=c++17 -o test -lfmt -lpthread
