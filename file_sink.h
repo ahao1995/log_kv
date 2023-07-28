@@ -1,10 +1,11 @@
 #pragma once
-#include <cstdio>
-#include <string>
 #include <sys/stat.h>
 
+#include <cstdio>
+#include <string>
+
 class file_sink {
-public:
+ public:
   bool open(const char *file_name) {
     create_dir(dir_name(file_name).c_str());
     file_ = ::fopen(file_name, "a+");
@@ -18,7 +19,7 @@ public:
   void write(const char *data, int len) { std::fwrite(data, 1, len, file_); }
   void flush() { std::fflush(file_); }
 
-private:
+ private:
   static bool mkdir_(const char *path) {
     return ::mkdir(path, mode_t(0755)) == 0;
   }
@@ -56,6 +57,6 @@ private:
     return true;
   }
 
-private:
+ private:
   std::FILE *file_{nullptr};
 };

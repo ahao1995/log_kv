@@ -34,110 +34,108 @@
 #define PP_EXPAND(...) __VA_ARGS__
 
 #define PP_GET_ARG_COUNT_INNER(...) PP_EXPAND(ARG_SER_N(__VA_ARGS__))
-#define PP_GET_ARG_COUNT(...)                                                 \
-  PP_GET_ARG_COUNT_INNER(__VA_ARGS__, RSEQ_SER_N())
-
+#define PP_GET_ARG_COUNT(...) PP_GET_ARG_COUNT_INNER(__VA_ARGS__, RSEQ_SER_N())
 
 #define LOG_SEPERATOR ,
 
 #define LOG_ARG_1(element, ...) PP_GET_TUPLE(1, element)
-#define LOG_ARG_2(element, ...)                                                \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_2(element, ...) \
+  PP_GET_TUPLE(1, element)      \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_1(__VA_ARGS__))
-#define LOG_ARG_3(element, ...)                                                \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_3(element, ...) \
+  PP_GET_TUPLE(1, element)      \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_2(__VA_ARGS__))
-#define LOG_ARG_4(element, ...)                                                \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_4(element, ...) \
+  PP_GET_TUPLE(1, element)      \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_3(__VA_ARGS__))
-#define LOG_ARG_5(element, ...)                                                \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_5(element, ...) \
+  PP_GET_TUPLE(1, element)      \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_4(__VA_ARGS__))
-#define LOG_ARG_6(element, ...)                                                \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_6(element, ...) \
+  PP_GET_TUPLE(1, element)      \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_5(__VA_ARGS__))
-#define LOG_ARG_7(element, ...)                                                \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_7(element, ...) \
+  PP_GET_TUPLE(1, element)      \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_6(__VA_ARGS__))
-#define LOG_ARG_8(element, ...)                                                \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_8(element, ...) \
+  PP_GET_TUPLE(1, element)      \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_7(__VA_ARGS__))
-#define LOG_ARG_9(element, ...)                                                \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_9(element, ...) \
+  PP_GET_TUPLE(1, element)      \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_8(__VA_ARGS__))
-#define LOG_ARG_10(element, ...)                                               \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_10(element, ...) \
+  PP_GET_TUPLE(1, element)       \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_9(__VA_ARGS__))
-#define LOG_ARG_11(element, ...)                                               \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_11(element, ...) \
+  PP_GET_TUPLE(1, element)       \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_10(__VA_ARGS__))
-#define LOG_ARG_12(element, ...)                                               \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_12(element, ...) \
+  PP_GET_TUPLE(1, element)       \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_11(__VA_ARGS__))
-#define LOG_ARG_13(element, ...)                                               \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_13(element, ...) \
+  PP_GET_TUPLE(1, element)       \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_12(__VA_ARGS__))
-#define LOG_ARG_14(element, ...)                                               \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_14(element, ...) \
+  PP_GET_TUPLE(1, element)       \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_13(__VA_ARGS__))
-#define LOG_ARG_15(element, ...)                                               \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_15(element, ...) \
+  PP_GET_TUPLE(1, element)       \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_14(__VA_ARGS__))
-#define LOG_ARG_16(element, ...)                                               \
-  PP_GET_TUPLE(1, element)                                                     \
+#define LOG_ARG_16(element, ...) \
+  PP_GET_TUPLE(1, element)       \
   LOG_SEPERATOR PP_EXPAND(LOG_ARG_15(__VA_ARGS__))
 
-#define ADD_VIEW(str)                                                          \
+#define ADD_VIEW(str) \
   std::string_view(PP_GET_TUPLE(0, str), sizeof(PP_GET_TUPLE(0, str)) - 1)
 
 #define LOG_FMT_ARR_1(element, ...) ADD_VIEW(element)
-#define LOG_FMT_ARR_2(element, ...)                                            \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_2(element, ...) \
+  ADD_VIEW(element)                 \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_1(__VA_ARGS__))
-#define LOG_FMT_ARR_3(element, ...)                                            \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_3(element, ...) \
+  ADD_VIEW(element)                 \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_2(__VA_ARGS__))
-#define LOG_FMT_ARR_4(element, ...)                                            \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_4(element, ...) \
+  ADD_VIEW(element)                 \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_3(__VA_ARGS__))
-#define LOG_FMT_ARR_5(element, ...)                                            \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_5(element, ...) \
+  ADD_VIEW(element)                 \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_4(__VA_ARGS__))
-#define LOG_FMT_ARR_6(element, ...)                                            \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_6(element, ...) \
+  ADD_VIEW(element)                 \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_5(__VA_ARGS__))
-#define LOG_FMT_ARR_7(element, ...)                                            \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_7(element, ...) \
+  ADD_VIEW(element)                 \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_6(__VA_ARGS__))
-#define LOG_FMT_ARR_8(element, ...)                                            \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_8(element, ...) \
+  ADD_VIEW(element)                 \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_7(__VA_ARGS__))
-#define LOG_FMT_ARR_9(element, ...)                                            \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_9(element, ...) \
+  ADD_VIEW(element)                 \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_8(__VA_ARGS__))
-#define LOG_FMT_ARR_10(element, ...)                                           \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_10(element, ...) \
+  ADD_VIEW(element)                  \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_9(__VA_ARGS__))
-#define LOG_FMT_ARR_11(element, ...)                                           \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_11(element, ...) \
+  ADD_VIEW(element)                  \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_10(__VA_ARGS__))
-#define LOG_FMT_ARR_12(element, ...)                                           \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_12(element, ...) \
+  ADD_VIEW(element)                  \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_11(__VA_ARGS__))
-#define LOG_FMT_ARR_13(element, ...)                                           \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_13(element, ...) \
+  ADD_VIEW(element)                  \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_12(__VA_ARGS__))
-#define LOG_FMT_ARR_14(element, ...)                                           \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_14(element, ...) \
+  ADD_VIEW(element)                  \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_13(__VA_ARGS__))
-#define LOG_FMT_ARR_15(element, ...)                                           \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_15(element, ...) \
+  ADD_VIEW(element)                  \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_14(__VA_ARGS__))
-#define LOG_FMT_ARR_16(element, ...)                                           \
-  ADD_VIEW(element)                                                            \
+#define LOG_FMT_ARR_16(element, ...) \
+  ADD_VIEW(element)                  \
   LOG_SEPERATOR PP_EXPAND(LOG_FMT_ARR_15(__VA_ARGS__))
 
-#define MAKE_FMT_ARRAY(N, ...)                                                 \
-  std::array<std::string_view, N>{                                             \
+#define MAKE_FMT_ARRAY(N, ...)     \
+  std::array<std::string_view, N>{ \
       PP_EXPAND(PP_CONCAT(LOG_FMT_ARR_, N)(__VA_ARGS__))};
 #define MAKE_LOG_ARGS(N, ...) PP_EXPAND(PP_CONCAT(LOG_ARG_, N)(__VA_ARGS__))

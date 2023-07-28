@@ -1,16 +1,18 @@
 #pragma once
-#include "file_sink.h"
-#include "log.h"
-#include <array>
-#include <cstdint>
 #include <fmt/format.h>
 #include <fmt/ranges.h>
-#include <mutex>
-#include <string_view>
 #include <sys/syscall.h>
 #include <sys/time.h>
 #include <unistd.h>
+
+#include <array>
+#include <cstdint>
+#include <mutex>
+#include <string_view>
 #include <vector>
+
+#include "file_sink.h"
+#include "log.h"
 
 namespace log_kv {
 template <typename CharType, std::size_t Size>
@@ -45,7 +47,7 @@ struct string_literal : public std::array<CharType, Size + 1> {
   using base::operator[];
   using base::at;
 
-private:
+ private:
   using base::cbegin;
   using base::cend;
   using base::rbegin;
@@ -70,8 +72,9 @@ decltype(auto) constexpr operator+(string_literal<CharType, Len1> str1,
   return ret;
 }
 // https://github.com/MengRao/str
-template <size_t SIZE> class Str {
-public:
+template <size_t SIZE>
+class Str {
+ public:
   static const int Size = SIZE;
   char s[SIZE];
 
@@ -81,52 +84,54 @@ public:
   char &operator[](int i) { return s[i]; }
   char operator[](int i) const { return s[i]; }
 
-  template <typename T> void fromi(T num) {
+  template <typename T>
+  void fromi(T num) {
     if constexpr (Size & 1) {
       s[Size - 1] = '0' + (num % 10);
       num /= 10;
     }
     switch (Size & -2) {
-    case 18:
-      *(uint16_t *)(s + 16) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
-      num /= 100;
-    case 16:
-      *(uint16_t *)(s + 14) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
-      num /= 100;
-    case 14:
-      *(uint16_t *)(s + 12) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
-      num /= 100;
-    case 12:
-      *(uint16_t *)(s + 10) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
-      num /= 100;
-    case 10:
-      *(uint16_t *)(s + 8) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
-      num /= 100;
-    case 8:
-      *(uint16_t *)(s + 6) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
-      num /= 100;
-    case 6:
-      *(uint16_t *)(s + 4) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
-      num /= 100;
-    case 4:
-      *(uint16_t *)(s + 2) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
-      num /= 100;
-    case 2:
-      *(uint16_t *)(s + 0) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
-      num /= 100;
+      case 18:
+        *(uint16_t *)(s + 16) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
+        num /= 100;
+      case 16:
+        *(uint16_t *)(s + 14) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
+        num /= 100;
+      case 14:
+        *(uint16_t *)(s + 12) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
+        num /= 100;
+      case 12:
+        *(uint16_t *)(s + 10) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
+        num /= 100;
+      case 10:
+        *(uint16_t *)(s + 8) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
+        num /= 100;
+      case 8:
+        *(uint16_t *)(s + 6) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
+        num /= 100;
+      case 6:
+        *(uint16_t *)(s + 4) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
+        num /= 100;
+      case 4:
+        *(uint16_t *)(s + 2) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
+        num /= 100;
+      case 2:
+        *(uint16_t *)(s + 0) = *(uint16_t *)(digit_pairs + ((num % 100) << 1));
+        num /= 100;
     }
   }
 
-  static constexpr const char *digit_pairs = "00010203040506070809"
-                                             "10111213141516171819"
-                                             "20212223242526272829"
-                                             "30313233343536373839"
-                                             "40414243444546474849"
-                                             "50515253545556575859"
-                                             "60616263646566676869"
-                                             "70717273747576777879"
-                                             "80818283848586878889"
-                                             "90919293949596979899";
+  static constexpr const char *digit_pairs =
+      "00010203040506070809"
+      "10111213141516171819"
+      "20212223242526272829"
+      "30313233343536373839"
+      "40414243444546474849"
+      "50515253545556575859"
+      "60616263646566676869"
+      "70717273747576777879"
+      "80818283848586878889"
+      "90919293949596979899";
 };
 
 struct source_loc {
@@ -159,7 +164,7 @@ struct log_pattern {
 class log_impl {
   using memory_buf_t = fmt::basic_memory_buffer<char>;
 
-public:
+ public:
   static log_impl &get_log_impl() {
     static log_impl log_;
     return log_;
@@ -196,25 +201,27 @@ public:
     }
   }
 
-protected:
+ protected:
   log_impl() {
     args_.reserve(4096);
     args_.resize(6);
     set_arg<0>(fmt::string_view(log_pattern_.year.s,
-                                26)); // year month day min sec mico_sec
-    set_arg<1>(int(1));               // thread_id
+                                26));  // year month day min sec mico_sec
+    set_arg<1>(int(1));                // thread_id
     set_arg<2>(fmt::string_view(log_pattern_.log_level.s, 5));
     set_arg<3>(fmt::string_view());
     set_arg<4>(int(1));
     set_arg<5>(fmt::string_view());
   }
 
-private:
-  template <size_t I, typename T> inline void set_arg(const T &arg) {
+ private:
+  template <size_t I, typename T>
+  inline void set_arg(const T &arg) {
     args_[I] = fmt::detail::make_arg<fmt::format_context>(arg);
   }
 
-  template <size_t I, typename T> inline void set_arg_val(const T &arg) {
+  template <size_t I, typename T>
+  inline void set_arg_val(const T &arg) {
     fmt::detail::value<fmt::format_context> &value_ =
         *(fmt::detail::value<fmt::format_context> *)&args_[I];
     value_ = fmt::detail::arg_mapper<fmt::format_context>().map(arg);
@@ -240,7 +247,8 @@ private:
       constexpr char f[7] = "=\"{}\" ";
       return string_literal<char, l>{e} + string_literal<char, 6>{f} +
              gen_fmt<Func, Idx + 1, Args...>(func);
-    } else {
+    }
+    else {
       constexpr auto e = func()[Idx];
       constexpr int l = e.size();
       constexpr char f[5] = "={} ";
@@ -272,7 +280,7 @@ private:
     set_arg_val<5>(fmt::string_view(loc.funcname));
   }
 
-private:
+ private:
   uint8_t level_{5};
   file_sink file_sink_;
   std::vector<fmt::basic_format_arg<fmt::format_context>> args_;
@@ -281,4 +289,4 @@ private:
   static inline thread_local int thread_sysid_{-1};
   std::mutex mutex_;
 };
-} // namespace log_kv
+}  // namespace log_kv

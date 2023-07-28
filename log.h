@@ -11,16 +11,16 @@ typedef enum {
   LOG_TRACE
 } LOG_LEVEL;
 
-#define SOURCE_LOC                                                             \
+#define SOURCE_LOC \
   log_kv::source_loc { __FILE__, __LINE__, __FUNCTION__ }
 
 #define SET_LOG_FILE(file) log_kv::log_impl::get_log_impl().set_log_file(file)
-#define SET_LOG_LEVEL(level)                                                   \
+#define SET_LOG_LEVEL(level) \
   log_kv::log_impl::get_log_impl().set_log_level(level)
 
 #define LOG_KV(level, ...)                                                     \
   do {                                                                         \
-    if (log_kv::log_impl::get_log_impl().get_log_level() >= level) {            \
+    if (log_kv::log_impl::get_log_impl().get_log_level() >= level) {           \
       log_kv::log_impl::get_log_impl().log_kv(                                 \
           SOURCE_LOC, level,                                                   \
           []() {                                                               \
